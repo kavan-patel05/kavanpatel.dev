@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Kavan | Network & Infrastructure Technician</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--bg:#0a0c10;
+--bg2:#0f1117;
+--bg3:#141720;
+--surface:#1a1e2a;
+--surface2:#1f2433;
+--cyan:#00e5c8;
+--cyan2:#00bfa5;
+--cyan-dim:rgba(0,229,200,0.12);
+--cyan-glow:rgba(0,229,200,0.25);
+--text:#e8ecf0;
+--text2:#8a9ab0;
+--text3:#5a6880;
+--border:rgba(255,255,255,0.07);
+--border2:rgba(0,229,200,0.2);
+}
+html{scroll-behavior:smooth}
+body{
+background:var(--bg);
+color:var(--text);
+font-family:'Inter',sans-serif;
+font-size:16px;
+line-height:1.7;
+cursor:none;
+overflow-x:hidden;
+}
+
+/* CUSTOM CURSOR */
+#cursor{position:fixed;width:8px;height:8px;border-radius:50%;background:var(--cyan);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .1s,opacity .2s;mix-blend-mode:screen}
+#cursor-ring{position:fixed;width:32px;height:32px;border-radius:50%;border:1px solid rgba(0,229,200,0.4);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .18s ease;mix-blend-mode:screen}
+body:has(a:hover) #cursor-ring,body:has(button:hover) #cursor-ring{transform:translate(-50%,-50%) scale(1.8);border-color:var(--cyan);opacity:.6}
+
+/* NAV */
+nav{
+position:fixed;top:0;left:0;right:0;z-index:100;
+padding:0 2rem;
+display:flex;align-items:center;justify-content:space-between;
+height:64px;
+background:rgba(10,12,16,0.6);
+backdrop-filter:blur(20px);
+-webkit-backdrop-filter:blur(20px);
+border-bottom:1px solid transparent;
+transition:border-color .3s;
+}
+nav.scrolled{border-bottom-color:var(--border2)}
+.nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;letter-spacing:.02em;color:var(--text);text-decoration:none}
+.nav-logo span{color:var(--cyan)}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{color:var(--text2);text-decoration:none;font-size:.875rem;letter-spacing:.05em;font-family:'JetBrains Mono',monospace;transition:color .2s}
+.nav-links a:hover{color:var(--cyan)}
+.nav-cta{
+background:var(--cyan-dim);
+border:1px solid var(--border2);
+color:var(--cyan);
+padding:.45rem 1.1rem;
+border-radius:6px;
+font-size:.8rem;
+font-family:'JetBrains Mono',monospace;
+text-decoration:none;
+transition:all .2s;
+}
+.nav-cta:hover{background:var(--cyan-glow);border-color:var(--cyan)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+.hamburger span{display:block;width:22px;height:1.5px;background:var(--text2);transition:all .3s}
+
+/* HERO */
+#home{
+position:relative;
+min-height:100vh;
+display:flex;flex-direction:column;justify-content:center;
+padding:6rem 2rem 4rem;
+overflow:hidden;
+}
+#network-canvas{position:absolute;inset:0;z-index:0;opacity:.5}
+.hero-inner{position:relative;z-index:1;max-width:960px;margin:0 auto;width:100%}
+.hero-badge{
+display:inline-flex;align-items:center;gap:.5rem;
+background:var(--surface);
+border:1px solid var(--border);
+border-radius:100px;
+padding:.35rem .9rem;
+font-family:'JetBrains Mono',monospace;
+font-size:.75rem;
+color:var(--text2);
+margin-bottom:2rem;
+}
+.badge-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;position:relative}
+.badge-dot::after{content:'';position:absolute;inset:-3px;border-radius:50%;background:rgba(34,197,94,0.3);animation:ping 1.5s infinite}
+@keyframes ping{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0;transform:scale(2)}}
+.hero-wave{font-size:2rem;margin-bottom:.5rem;display:block}
+.hero-h1{
+font-family:'Syne',sans-serif;
+font-size:clamp(2.6rem,6vw,4.2rem);
+font-weight:800;
+line-height:1.08;
+letter-spacing:-.02em;
+margin-bottom:1.2rem;
+}
+.hero-h1 .name{
+background:linear-gradient(135deg,#e8ecf0 0%,var(--cyan) 100%);
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.typewriter-wrap{
+font-family:'JetBrains Mono',monospace;
+font-size:clamp(1rem,2.5vw,1.25rem);
+color:var(--cyan);
+margin-bottom:1.4rem;
+min-height:2rem;
+}
+.typewriter-wrap .prefix{color:var(--text3)}
+#typewriter::after{content:'|';animation:blink .7s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.hero-sub{
+font-size:1.05rem;
+color:var(--text2);
+max-width:580px;
+line-height:1.8;
+margin-bottom:2.5rem;
+}
+.hero-actions{display:flex;gap:1rem;flex-wrap:wrap;align-items:center}
+.btn-primary{
+background:var(--cyan);
+color:#0a0c10;
+padding:.75rem 1.75rem;
+border-radius:8px;
+font-weight:600;
+font-size:.9rem;
+text-decoration:none;
+font-family:'Syne',sans-serif;
+transition:all .2s;
+letter-spacing:.02em;
+}
+.btn-primary:hover{background:#00f5d8;box-shadow:0 0 24px rgba(0,229,200,0.35)}
+.btn-secondary{
+background:transparent;
+color:var(--text);
+padding:.75rem 1.75rem;
+border-radius:8px;
+font-weight:500;
+font-size:.9rem;
+text-decoration:none;
+border:1px solid var(--border);
+font-family:'Syne',sans-serif;
+transition:all .2s;
+}
+.btn-secondary:hover{border-color:var(--border2);color:var(--cyan)}
+.hero-socials{display:flex;gap:1rem;margin-top:2.5rem}
+.hero-socials a{
+color:var(--text3);
+text-decoration:none;
+font-family:'JetBrains Mono',monospace;
+font-size:.8rem;
+transition:color .2s;
+display:flex;align-items:center;gap:.4rem;
+}
+.hero-socials a:hover{color:var(--cyan)}
+.scroll-hint{
+position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);
+display:flex;flex-direction:column;align-items:center;gap:.4rem;
+color:var(--text3);font-size:.72rem;font-family:'JetBrains Mono',monospace;
+animation:float 2.5s ease-in-out infinite;
+}
+@keyframes float{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+.scroll-line{width:1px;height:32px;background:linear-gradient(to bottom,var(--cyan),transparent)}
+
+/* SECTIONS SHARED */
+section{padding:6rem 2rem}
+.section-inner{max-width:960px;margin:0 auto}
+.section-label{
+font-family:'JetBrains Mono',monospace;
+font-size:.78rem;
+color:var(--cyan);
+letter-spacing:.15em;
+text-transform:uppercase;
+margin-bottom:.8rem;
+}
+.section-title{
+font-family:'Syne',sans-serif;
+font-size:clamp(1.8rem,4vw,2.5rem);
+font-weight:700;
+letter-spacing:-.02em;
+margin-bottom:1.5rem;
+}
+.section-subtitle{color:var(--text2);max-width:560px;font-size:1rem;line-height:1.8}
+.divider{width:100%;height:1px;background:var(--border);margin:0}
+
+/* ABOUT */
+#about{background:var(--bg2)}
+.about-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:4rem;
+margin-top:3.5rem;
+align-items:start;
+}
+.about-text p{color:var(--text2);line-height:1.9;margin-bottom:1rem}
+.about-text p strong{color:var(--text)}
+.skills-section{margin-top:2rem}
+.skills-section h4{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:600;margin-bottom:.8rem;color:var(--text2)}
+.skill-tags{display:flex;flex-wrap:wrap;gap:.5rem}
+.tag{
+font-family:'JetBrains Mono',monospace;
+font-size:.72rem;
+padding:.3rem .75rem;
+border-radius:4px;
+border:1px solid var(--border);
+color:var(--text2);
+background:var(--surface);
+transition:all .2s;
+}
+.tag:hover{border-color:var(--border2);color:var(--cyan);background:var(--cyan-dim)}
+.tag.cyan{border-color:var(--border2);color:var(--cyan);background:var(--cyan-dim)}
+.about-stats{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.stat-card{
+background:var(--surface);
+border:1px solid var(--border);
+border-radius:10px;
+padding:1.25rem;
+transition:border-color .2s;
+}
+.stat-card:hover{border-color:var(--border2)}
+.stat-num{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:var(--cyan);line-height:1}
+.stat-label{font-size:.8rem;color:var(--text3);margin-top:.3rem;font-family:'JetBrains Mono',monospace}
+.cert-card{
+background:var(--surface);
+border:1px solid var(--border);
+border-radius:10px;
+padding:1.25rem;
+margin-top:1rem;
+display:flex;align-items:center;gap:1rem;
+transition:border-color .2s;
+}
+.cert-card:hover{border-color:var(--border2)}
+.cert-icon{
+width:42px;height:42px;border-radius:8px;
+background:var(--cyan-dim);
+border:1px solid var(--border2);
+display:flex;align-items:center;justify-content:center;
+font-size:1.2rem;flex-shrink:0;
+}
+.cert-info .cert-name{font-weight:600;font-size:.9rem;color:var(--text);font-family:'Syne',sans-serif}
+.cert-info .cert-meta{font-size:.75rem;color:var(--text3);font-family:'JetBrains Mono',monospace;margin-top:.2rem}
+.cert-status{
+font-size:.65rem;
+font-family:'JetBrains Mono',monospace;
+padding:.2rem .55rem;
+border-radius:100px;
+margin-left:auto;
+white-space:nowrap;
+}
+.status-active{background:rgba(34,197,94,.12);color:#22c55e;border:1px solid rgba(34,197,94,.2)}
+.status-progress{background:rgba(234,179,8,.12);color:#eab308;border:1px solid rgba(234,179,8,.2)}
+
+/* PROJECTS */
+#projects{background:var(--bg)}
+.projects-grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+gap:1.5rem;
+margin-top:3rem;
+}
+.project-card{
+background:var(--surface);
+border:1px solid var(--border);
+border-radius:12px;
+padding:1.5rem;
+position:relative;
+overflow:hidden;
+transition:border-color .3s,transform .2s;
+cursor:pointer;
+}
+.project-card::before{
+content:'';
+position:absolute;top:0;left:0;right:0;height:2px;
+background:linear-gradient(90deg,transparent,var(--cyan),transparent);
+opacity:0;transition:opacity .3s;
+}
+.project-card:hover{border-color:var(--border2);transform:translateY(-3px)}
+.project-card:hover::before{opacity:1}
+.project-card.featured{
+grid-column:span 2;
+background:linear-gradient(135deg,var(--surface) 0%,var(--surface2) 100%);
+border-color:var(--border2);
+}
+.project-card.featured::before{opacity:.5}
+.project-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem}
+.project-icon{font-size:1.5rem}
+.project-link{color:var(--text3);font-size:.8rem;font-family:'JetBrains Mono',monospace;text-decoration:none;transition:color .2s}
+.project-link:hover{color:var(--cyan)}
+.project-title{font-family:'Syne',sans-serif;font-weight:700;font-size:1.05rem;margin-bottom:.5rem}
+.project-desc{color:var(--text2);font-size:.88rem;line-height:1.7;margin-bottom:1.25rem}
+.project-tags{display:flex;flex-wrap:wrap;gap:.4rem}
+.project-tags .tag{font-size:.68rem;padding:.2rem .55rem}
+.featured-badge{
+position:absolute;top:1.25rem;right:1.25rem;
+font-family:'JetBrains Mono',monospace;
+font-size:.65rem;
+padding:.2rem .6rem;
+background:var(--cyan-dim);
+border:1px solid var(--border2);
+border-radius:100px;
+color:var(--cyan);
+}
+
+/* EXPERIENCE */
+#experience{background:var(--bg2)}
+.timeline{position:relative;margin-top:3rem;padding-left:2rem}
+.timeline::before{
+content:'';position:absolute;left:0;top:0;bottom:0;width:1px;
+background:linear-gradient(to bottom,var(--cyan),var(--border),transparent);
+}
+.timeline-item{
+position:relative;
+padding:0 0 3rem 2rem;
+opacity:0;transform:translateX(-20px);
+transition:all .5s ease;
+}
+.timeline-item.visible{opacity:1;transform:translateX(0)}
+.timeline-dot{
+position:absolute;left:-2rem;top:.3rem;
+width:12px;height:12px;border-radius:50%;
+background:var(--cyan);
+box-shadow:0 0 0 3px var(--bg2),0 0 0 5px var(--border2);
+transform:translateX(-50%) translateX(0.5px);
+}
+.timeline-dot.dim{background:var(--surface2);box-shadow:0 0 0 3px var(--bg2),0 0 0 5px var(--border)}
+.timeline-period{
+font-family:'JetBrains Mono',monospace;
+font-size:.72rem;
+color:var(--text3);
+margin-bottom:.3rem;
+}
+.timeline-role{font-family:'Syne',sans-serif;font-weight:700;font-size:1.1rem;color:var(--text);margin-bottom:.2rem}
+.timeline-company{
+font-size:.88rem;color:var(--cyan);
+font-family:'JetBrains Mono',monospace;
+margin-bottom:.7rem;
+}
+.timeline-desc{color:var(--text2);font-size:.88rem;line-height:1.75}
+.timeline-desc ul{padding-left:1.2rem;margin-top:.5rem}
+.timeline-desc li{margin-bottom:.3rem}
+
+/* CONTACT */
+#contact{
+background:var(--bg);
+text-align:center;
+position:relative;
+overflow:hidden;
+}
+.contact-glow{
+position:absolute;
+width:600px;height:600px;
+border-radius:50%;
+background:radial-gradient(circle,rgba(0,229,200,0.06) 0%,transparent 70%);
+top:50%;left:50%;
+transform:translate(-50%,-50%);
+pointer-events:none;
+}
+.contact-inner{position:relative;z-index:1}
+.contact-email{
+display:inline-flex;align-items:center;gap:.75rem;
+font-family:'JetBrains Mono',monospace;
+font-size:clamp(1rem,3vw,1.4rem);
+color:var(--cyan);
+text-decoration:none;
+margin:2rem 0;
+padding:1rem 2rem;
+border:1px solid var(--border2);
+border-radius:10px;
+background:var(--cyan-dim);
+transition:all .2s;
+}
+.contact-email:hover{background:var(--cyan-glow);box-shadow:0 0 32px rgba(0,229,200,0.15)}
+.contact-links{display:flex;gap:1.5rem;justify-content:center;margin-top:1.5rem;flex-wrap:wrap}
+.contact-link{
+font-family:'JetBrains Mono',monospace;
+font-size:.8rem;
+color:var(--text3);
+text-decoration:none;
+display:flex;align-items:center;gap:.4rem;
+transition:color .2s;
+}
+.contact-link:hover{color:var(--cyan)}
+
+/* FOOTER */
+footer{
+background:var(--bg2);
+border-top:1px solid var(--border);
+padding:2rem;
+display:flex;align-items:center;justify-content:space-between;
+flex-wrap:wrap;gap:1rem;
+}
+footer .foot-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:.9rem}
+footer .foot-logo span{color:var(--cyan)}
+footer .foot-copy{font-size:.78rem;color:var(--text3);font-family:'JetBrains Mono',monospace}
+footer nav{display:flex;gap:1.5rem;list-style:none}
+footer nav a{font-size:.75rem;color:var(--text3);text-decoration:none;transition:color .2s;font-family:'JetBrains Mono',monospace}
+footer nav a:hover{color:var(--cyan)}
+
+/* SCROLL REVEAL */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+
+/* MOBILE NAV */
+@media(max-width:768px){
+.nav-links,.nav-cta{display:none}
+.hamburger{display:flex}
+.about-grid{grid-template-columns:1fr}
+.project-card.featured{grid-column:span 1}
+.about-stats{grid-template-columns:1fr 1fr}
+}
+
+/* MOBILE NAV OPEN */
+.mobile-nav{
+position:fixed;inset:0;z-index:90;
+background:rgba(10,12,16,0.97);
+backdrop-filter:blur(20px);
+display:flex;flex-direction:column;align-items:center;justify-content:center;
+gap:2rem;
+opacity:0;pointer-events:none;transition:opacity .3s;
+}
+.mobile-nav.open{opacity:1;pointer-events:all}
+.mobile-nav a{
+font-family:'Syne',sans-serif;
+font-size:2rem;
+font-weight:700;
+color:var(--text2);
+text-decoration:none;
+transition:color .2s;
+}
+.mobile-nav a:hover{color:var(--cyan)}
+.close-btn{position:absolute;top:1.5rem;right:2rem;background:none;border:none;color:var(--text3);font-size:1.5rem;cursor:pointer}
+
+/* SCAN LINE ANIMATION on cards */
+@keyframes scanline{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.project-card:hover .scan{animation:scanline .6s ease forwards}
+.scan{
+position:absolute;top:0;left:0;width:50%;height:100%;
+background:linear-gradient(90deg,transparent,rgba(0,229,200,0.04),transparent);
+pointer-events:none;
+}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav">
+  <button class="close-btn" onclick="toggleMobile()">✕</button>
+  <a href="#home" onclick="toggleMobile()">Home</a>
+  <a href="#about" onclick="toggleMobile()">About</a>
+  <a href="#projects" onclick="toggleMobile()">Projects</a>
+  <a href="#experience" onclick="toggleMobile()">Experience</a>
+  <a href="#contact" onclick="toggleMobile()">Contact</a>
+</div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#home" class="nav-logo">K<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Let's Talk →</a>
+  <div class="hamburger" onclick="toggleMobile()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="home">
+  <canvas id="network-canvas"></canvas>
+  <div class="hero-inner">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      Williams Lake, BC · Open to Kelowna &amp; Remote
+    </div>
+    <span class="hero-wave">👋</span>
+    <h1 class="hero-h1">
+      Hi, I'm <span class="name">Kavan</span>,<br>
+      a network &amp; infrastructure<br>specialist.
+    </h1>
+    <div class="typewriter-wrap">
+      <span class="prefix">// </span><span id="typewriter"></span>
+    </div>
+    <p class="hero-sub">
+      Telecom technician turned networking specialist — with hands-on HFC plant experience at Rogers, fibre infrastructure at Bell, and a programming background from Algonquin College. Currently pursuing CCNA to move into NOC and network analyst roles.
+    </p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Let's Talk</a>
+      <a href="#projects" class="btn-secondary">View Projects</a>
+    </div>
+    <div class="hero-socials">
+      <a href="https://linkedin.com/in/kavan" target="_blank">↗ LinkedIn</a>
+      <a href="https://github.com/kavan" target="_blank">↗ GitHub</a>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <p class="section-label reveal">About</p>
+    <h2 class="section-title reveal reveal-delay-1">A bit about me</h2>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>Hey there, I'm Kavan — a <strong>network and infrastructure technician</strong> with a background that spans telecom field work, HFC plant maintenance, and software development.</p>
+        <p>Currently at <strong>Rogers Communications</strong> as an HFC Plant Maintenance Technician, I handle everything from RF signal troubleshooting and outage resolution to NOC coordination, ServiceNow ticketing, and planned change control across the BC Interior.</p>
+        <p>Before Rogers, I spent two years at <strong>Bell Technical Solutions</strong> installing and repairing fibre infrastructure. My journey started with a <strong>Computer Programming diploma from Algonquin College</strong>, where I completed co-op terms as a Software Developer in Test — giving me a unique blend of field telecom and software instincts.</p>
+        <p>I'm now deep into <strong>CCNA preparation</strong>, building a home NOC simulation lab, and targeting NOC Analyst and Network Systems Analyst roles in Kelowna. Would you like to work together or just chat? Feel free to reach out.</p>
+        <div class="skills-section">
+          <h4>Core Skills</h4>
+          <div class="skill-tags">
+            <span class="tag cyan">Cisco IOS</span>
+            <span class="tag cyan">VLANs / Trunking</span>
+            <span class="tag cyan">STP / RSTP</span>
+            <span class="tag cyan">Subnetting</span>
+            <span class="tag cyan">Inter-VLAN Routing</span>
+            <span class="tag">RF Signal Troubleshooting</span>
+            <span class="tag">HFC Plant Maintenance</span>
+            <span class="tag">Fibre Splicing &amp; Repair</span>
+            <span class="tag">ServiceNow</span>
+            <span class="tag">NOC Coordination</span>
+            <span class="tag">Packet Tracer</span>
+            <span class="tag">Ubuntu Linux</span>
+            <span class="tag">TCP/IP Stack</span>
+            <span class="tag">Python (basics)</span>
+          </div>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <div class="about-stats">
+          <div class="stat-card">
+            <div class="stat-num">3+</div>
+            <div class="stat-label">Years in Telecom</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">2</div>
+            <div class="stat-label">ISPs (Bell + Rogers)</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">5</div>
+            <div class="stat-label">Lab Phases Built</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">∞</div>
+            <div class="stat-label">Packets Analyzed</div>
+          </div>
+        </div>
+        <div style="margin-top:1.5rem">
+          <h4 style="font-family:'Syne',sans-serif;font-size:.9rem;color:var(--text2);margin-bottom:.8rem">Certifications &amp; Education</h4>
+          <div class="cert-card">
+            <div class="cert-icon">🎖</div>
+            <div class="cert-info">
+              <div class="cert-name">Cisco CCNA (200-301)</div>
+              <div class="cert-meta">Exam scheduled · Late April 2025</div>
+            </div>
+            <span class="cert-status status-progress">In Progress</span>
+          </div>
+          <div class="cert-card">
+            <div class="cert-icon">🎓</div>
+            <div class="cert-info">
+              <div class="cert-name">Computer Programming Diploma</div>
+              <div class="cert-meta">Algonquin College · Ottawa, ON</div>
+            </div>
+            <span class="cert-status status-active">Completed</span>
+          </div>
+          <div class="cert-card">
+            <div class="cert-icon">📡</div>
+            <div class="cert-info">
+              <div class="cert-name">HFC Plant Technician</div>
+              <div class="cert-meta">Rogers Certified · BC Interior</div>
+            </div>
+            <span class="cert-status status-active">Active</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-inner">
+    <p class="section-label reveal">Projects</p>
+    <h2 class="section-title reveal reveal-delay-1">Things I've built</h2>
+    <p class="section-subtitle reveal reveal-delay-2">A selection of networking lab projects, simulations, and tools — from CCNA study environments to real-world inspired NOC tooling.</p>
+    <div class="projects-grid">
+
+      <div class="project-card featured reveal">
+        <div class="scan"></div>
+        <span class="featured-badge">Flagship Project</span>
+        <div class="project-top">
+          <span class="project-icon">🏗</span>
+        </div>
+        <div class="project-title">Home Network &amp; NOC Simulation Lab</div>
+        <div class="project-desc">A 5-phase lab built in Packet Tracer and VirtualBox simulating a full enterprise network environment. Phase 1 covered VLANs, trunking, inter-VLAN routing, and end-to-end connectivity testing. Phase 2 introduces Ubuntu Linux nodes and virtual machine networking. Designed to mirror real ISP NOC environments and build toward monitoring, alerting, and automation workflows.</div>
+        <div class="project-tags">
+          <span class="tag cyan">Cisco Packet Tracer</span>
+          <span class="tag cyan">VirtualBox</span>
+          <span class="tag cyan">Ubuntu Linux</span>
+          <span class="tag">VLANs</span>
+          <span class="tag">STP</span>
+          <span class="tag">Inter-VLAN Routing</span>
+          <span class="tag">NOC Design</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal reveal-delay-1">
+        <div class="scan"></div>
+        <div class="project-top">
+          <span class="project-icon">📊</span>
+          <a href="#" class="project-link">↗ View</a>
+        </div>
+        <div class="project-title">ISP NOC Dashboard Simulator</div>
+        <div class="project-desc">A Python-based dashboard that simulates NOC alert triaging — pulling synthetic alarms from a local topology and categorizing them by severity, node, and affected subscriber count. Modelled on real Rogers NOC workflows.</div>
+        <div class="project-tags">
+          <span class="tag cyan">Python</span>
+          <span class="tag">Flask</span>
+          <span class="tag">SQLite</span>
+          <span class="tag">NOC Logic</span>
+          <span class="tag">Alert Triaging</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal reveal-delay-2">
+        <div class="scan"></div>
+        <div class="project-top">
+          <span class="project-icon">📡</span>
+          <a href="#" class="project-link">↗ View</a>
+        </div>
+        <div class="project-title">HFC Node Health Monitor</div>
+        <div class="project-desc">A data logging tool that visualizes simulated RF signal metrics (upstream/downstream power, SNR, uncorrectables) across a virtual HFC plant segment. Identifies noise ingress patterns and helps automate fault detection decisions.</div>
+        <div class="project-tags">
+          <span class="tag cyan">RF Monitoring</span>
+          <span class="tag">Python</span>
+          <span class="tag">Matplotlib</span>
+          <span class="tag">HFC Plant</span>
+          <span class="tag">Signal Analysis</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal reveal-delay-1">
+        <div class="scan"></div>
+        <div class="project-top">
+          <span class="project-icon">🔀</span>
+          <a href="#" class="project-link">↗ View</a>
+        </div>
+        <div class="project-title">CCNA Subnetting Drill Tool</div>
+        <div class="project-desc">A command-line subnetting quiz tool that generates randomized CIDR problems, tracks accuracy by topic (VLSM, wildcard masks, classful), and outputs a study report. Built for daily CCNA exam prep.</div>
+        <div class="project-tags">
+          <span class="tag cyan">Python</span>
+          <span class="tag">CLI</span>
+          <span class="tag">Subnetting</span>
+          <span class="tag">CCNA Prep</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal reveal-delay-2">
+        <div class="scan"></div>
+        <div class="project-top">
+          <span class="project-icon">🌐</span>
+          <a href="#" class="project-link">↗ View</a>
+        </div>
+        <div class="project-title">Multi-Site OSPF Lab (Packet Tracer)</div>
+        <div class="project-desc">A Packet Tracer topology simulating a 3-site enterprise WAN with OSPF routing, route summarization, and failover. Includes documentation of convergence behavior and config notes for CCNA review.</div>
+        <div class="project-tags">
+          <span class="tag cyan">OSPF</span>
+          <span class="tag">WAN Design</span>
+          <span class="tag">Cisco IOS</span>
+          <span class="tag">Packet Tracer</span>
+          <span class="tag">Failover</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal reveal-delay-3">
+        <div class="scan"></div>
+        <div class="project-top">
+          <span class="project-icon">🧪</span>
+          <a href="#" class="project-link">↗ View</a>
+        </div>
+        <div class="project-title">QA Automation Test Suite</div>
+        <div class="project-desc">Built during Algonquin co-op as a Software Developer in Test. A Selenium-based automated regression suite for a web application — covering login flows, form validation, and API smoke tests with HTML reporting.</div>
+        <div class="project-tags">
+          <span class="tag">Selenium</span>
+          <span class="tag">Python</span>
+          <span class="tag">pytest</span>
+          <span class="tag">CI Pipeline</span>
+          <span class="tag">QA Automation</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-inner">
+    <p class="section-label reveal">Experience</p>
+    <h2 class="section-title reveal reveal-delay-1">My professional journey</h2>
+    <p class="section-subtitle reveal reveal-delay-2">A timeline of my career — from software co-ops to fibre field work to HFC plant maintenance, all building toward network engineering.</p>
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-period">2024 – Present</div>
+        <div class="timeline-role">HFC Plant Maintenance System Technician</div>
+        <div class="timeline-company">Rogers Communications · Williams Lake, BC</div>
+        <div class="timeline-desc">
+          <ul>
+            <li>Resolve plant outages and service degradations across the BC Interior HFC network — from customer premises to headend/node</li>
+            <li>RF signal troubleshooting across amplifiers and taps (500/540/715/860 MHz); noise ingress isolation and uncorrectable analysis</li>
+            <li>NOC/back office coordination using ServiceNow for ticketing, planned change control, and outage escalation</li>
+            <li>RSA setup, installer support, and service call field work across residential and commercial sites</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot dim"></div>
+        <div class="timeline-period">2022 – 2024</div>
+        <div class="timeline-role">Telecom Technician — Fibre</div>
+        <div class="timeline-company">Bell Technical Solutions · BC Interior</div>
+        <div class="timeline-desc">
+          <ul>
+            <li>Installed and repaired fibre infrastructure for residential and business customers across the BC Interior</li>
+            <li>End-to-end fault diagnosis on fibre drops, splice enclosures, and ONT equipment</li>
+            <li>Coordinated with provisioning teams and escalated complex faults to network operations</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot dim"></div>
+        <div class="timeline-period">2021 – 2022</div>
+        <div class="timeline-role">Software Developer in Test (Co-op)</div>
+        <div class="timeline-company">Algonquin College Co-op · Ottawa, ON</div>
+        <div class="timeline-desc">
+          <ul>
+            <li>Designed and implemented automated regression test suites using Selenium and pytest</li>
+            <li>Wrote test plans, defect reports, and CI pipeline integration scripts</li>
+            <li>Completed two co-op terms as Software Automation Tester on different project teams</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot dim"></div>
+        <div class="timeline-period">2019 – 2022</div>
+        <div class="timeline-role">Computer Programming Diploma</div>
+        <div class="timeline-company">Algonquin College · Ottawa, ON</div>
+        <div class="timeline-desc">
+          Studied software development fundamentals, data structures, databases, and systems — with two industry co-op placements as a Software Developer in Test. Graduated with a strong foundation in both coding and quality engineering.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-glow"></div>
+  <div class="section-inner contact-inner">
+    <p class="section-label reveal">Contact</p>
+    <h2 class="section-title reveal reveal-delay-1" style="max-width:600px;margin:0 auto 1rem">Let's work<br>together</h2>
+    <p class="section-subtitle reveal reveal-delay-2" style="margin:0 auto;text-align:center">Open to NOC Analyst, Network Systems Analyst, and related infrastructure roles in Kelowna or remote BC. Let's connect.</p>
+    <div style="display:flex;justify-content:center">
+      <a href="mailto:kavan@email.com" class="contact-email reveal reveal-delay-3">
+        ✉ kavan@email.com
+      </a>
+    </div>
+    <div class="contact-links reveal">
+      <a href="https://linkedin.com/in/kavan" target="_blank" class="contact-link">↗ LinkedIn</a>
+      <a href="https://github.com/kavan" target="_blank" class="contact-link">↗ GitHub</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-logo">K<span>.</span>avan</div>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#experience">Experience</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <div class="foot-copy">© 2025 Kavan. All rights reserved.</div>
+</footer>
+
+<script>
+// Cursor
+const cursor=document.getElementById('cursor');
+const ring=document.getElementById('cursor-ring');
+document.addEventListener('mousemove',e=>{
+  cursor.style.left=e.clientX+'px';cursor.style.top=e.clientY+'px';
+  setTimeout(()=>{ring.style.left=e.clientX+'px';ring.style.top=e.clientY+'px'},60);
+});
+
+// Typewriter
+const roles=['NOC Analyst','Network Systems Analyst','Infrastructure Specialist','CCNA Candidate'];
+let ri=0,ci=0,del=false;
+const tw=document.getElementById('typewriter');
+function type(){
+  const word=roles[ri];
+  if(!del){
+    tw.textContent=word.slice(0,ci+1);ci++;
+    if(ci===word.length){del=true;setTimeout(type,1800);return;}
+  }else{
+    tw.textContent=word.slice(0,ci-1);ci--;
+    if(ci===0){del=false;ri=(ri+1)%roles.length;setTimeout(type,400);return;}
+  }
+  setTimeout(type,del?60:90);
+}
+setTimeout(type,800);
+
+// Nav scroll
+const navbar=document.getElementById('navbar');
+window.addEventListener('scroll',()=>{navbar.classList.toggle('scrolled',window.scrollY>40)});
+
+// Scroll reveal
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible')}});
+},{threshold:.12});
+document.querySelectorAll('.reveal,.timeline-item').forEach(el=>obs.observe(el));
+
+// Mobile nav
+function toggleMobile(){document.getElementById('mobileNav').classList.toggle('open')}
+
+// Network canvas
+const canvas=document.getElementById('network-canvas');
+const ctx=canvas.getContext('2d');
+let nodes=[],W,H;
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;initNodes()}
+function initNodes(){
+  nodes=[];
+  const count=Math.floor((W*H)/22000);
+  for(let i=0;i<count;i++){
+    nodes.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*2+1.5});
+  }
+}
+function drawNet(){
+  ctx.clearRect(0,0,W,H);
+  for(let i=0;i<nodes.length;i++){
+    const n=nodes[i];
+    n.x+=n.vx;n.y+=n.vy;
+    if(n.x<0||n.x>W)n.vx*=-1;
+    if(n.y<0||n.y>H)n.vy*=-1;
+    ctx.beginPath();
+    ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+    ctx.fillStyle='rgba(0,229,200,0.5)';
+    ctx.fill();
+    for(let j=i+1;j<nodes.length;j++){
+      const m=nodes[j];
+      const dist=Math.hypot(n.x-m.x,n.y-m.y);
+      if(dist<130){
+        ctx.beginPath();
+        ctx.moveTo(n.x,n.y);ctx.lineTo(m.x,m.y);
+        ctx.strokeStyle=`rgba(0,229,200,${.35*(1-dist/130)})`;
+        ctx.lineWidth=.5;
+        ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(drawNet);
+}
+window.addEventListener('resize',resize);
+resize();drawNet();
+</script>
+</body>
+</html>
