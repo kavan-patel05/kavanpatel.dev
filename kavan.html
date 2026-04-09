@@ -979,7 +979,7 @@ footer::before{
       </div>
 
       <!-- Right: Form -->
-      <form action="https://formsubmit.co/kavanpatel0508@gmail.com" method="POST" class="contact-form">
+      <form id="contactForm" action="https://formsubmit.co/ajax/kavanpatel0508@gmail.com" method="POST" class="contact-form">
         <input type="hidden" name="_subject" value="Portfolio Contact — New Message">
         <input type="hidden" name="_captcha" value="false">
         <input type="hidden" name="_template" value="table">
@@ -1025,6 +1025,40 @@ footer::before{
 </footer>
 
 <script>
+/* FORM SUBMIT AJAX */
+const cForm=document.getElementById('contactForm');
+if(cForm){
+  cForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    const btn=cForm.querySelector('.form-submit');
+    const ogHtml=btn.innerHTML;
+    btn.innerHTML='Sending...';
+    btn.style.opacity='0.6';
+    btn.style.pointerEvents='none';
+
+    fetch(cForm.action, {
+      method:"POST",
+      headers:{'Accept':'application/json'},
+      body:new FormData(cForm)
+    })
+    .then(res=>res.json())
+    .then(data=>{
+      btn.innerHTML='Message Sent ✓';
+      btn.style.background='#4ade80';
+      btn.style.color='#0d0b09';
+      btn.style.opacity='1';
+      cForm.reset();
+      setTimeout(()=>{btn.innerHTML=ogHtml;btn.style=''}, 5000);
+    })
+    .catch(err=>{
+      btn.innerHTML='Error! Try Again';
+      btn.style.background='#ef4444';
+      btn.style.opacity='1';
+      setTimeout(()=>{btn.innerHTML=ogHtml;btn.style=''}, 5000);
+    });
+  });
+}
+
 /* LOADER */
 window.addEventListener('load', () => {
   const loader = document.getElementById('loader');
